@@ -7,11 +7,7 @@ export function Header({ onOpenCart }: { onOpenCart: () => void }) {
 
   return (
     <header className="sticky top-0 z-30 border-b border-neutral-100 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-        <span className="w-10" aria-hidden />
-        <span className="text-base font-bold tracking-tight text-neutral-800">
-          Performance Tríade
-        </span>
+      <div className="mx-auto flex max-w-5xl items-center justify-end px-4 py-3">
         <button
           onClick={onOpenCart}
           aria-label="Abrir carrinho"
