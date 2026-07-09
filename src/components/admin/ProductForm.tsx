@@ -41,15 +41,25 @@ export function ProductForm({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    setErro(null);
     setEnviandoImagem(true);
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("/api/upload", { method: "POST", body: formData });
+    let res: Response;
+    try {
+      res = await fetch("/api/upload", { method: "POST", body: formData });
+    } catch {
+      setEnviandoImagem(false);
+      setErro("Falha ao enviar imagem: sem conexão com o servidor.");
+      return;
+    }
+
     setEnviandoImagem(false);
 
     if (!res.ok) {
-      setErro("Falha ao enviar imagem");
+      const data = await res.json().catch(() => null);
+      setErro(`Falha ao enviar imagem: ${data?.error ?? `erro ${res.status}`}`);
       return;
     }
 

@@ -26,9 +26,17 @@ export async function POST(request: NextRequest) {
   const extensao = file.type.split("/")[1];
   const nomeArquivo = `${randomUUID()}.${extensao}`;
 
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-  await mkdir(uploadDir, { recursive: true });
-  await writeFile(path.join(uploadDir, nomeArquivo), bytes);
+  try {
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    await mkdir(uploadDir, { recursive: true });
+    await writeFile(path.join(uploadDir, nomeArquivo), bytes);
+  } catch (err) {
+    console.error("Falha ao salvar imagem em disco:", err);
+    return NextResponse.json(
+      { error: "Não foi possível salvar o arquivo no servidor" },
+      { status: 500 }
+    );
+  }
 
   return NextResponse.json({ url: `/uploads/${nomeArquivo}` }, { status: 201 });
 }
