@@ -6,7 +6,7 @@ const produtoSchema = z.object({
   nome: z.string().min(1),
   descricao: z.string().min(1),
   preco: z.number().positive(),
-  imagemUrl: z.string().url().nullable().optional(),
+  imagemUrl: z.string().min(1).nullable().optional(),
   categoriaId: z.string().nullable().optional(),
   ativo: z.boolean().optional(),
 });
