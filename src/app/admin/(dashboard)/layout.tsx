@@ -3,17 +3,23 @@ import { LogoutButton } from "@/components/admin/LogoutButton";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="border-b bg-white">
+    <div className="min-h-screen bg-neutral-50">
+      <header className="bg-neutral-900">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-          <nav className="flex items-center gap-4 text-sm font-medium">
-            <Link href="/admin" className="text-brand">
+          <nav className="flex items-center gap-5 text-sm font-medium">
+            <Link href="/admin" className="text-white transition hover:text-primary-300">
               Dashboard
             </Link>
-            <Link href="/admin/produtos" className="text-gray-600 hover:text-brand">
+            <Link
+              href="/admin/produtos"
+              className="text-neutral-300 transition hover:text-primary-300"
+            >
               Produtos
             </Link>
-            <Link href="/admin/vendedores" className="text-gray-600 hover:text-brand">
+            <Link
+              href="/admin/vendedores"
+              className="text-neutral-300 transition hover:text-primary-300"
+            >
               Vendedores
             </Link>
           </nav>

@@ -15,7 +15,7 @@ export function CopyLinkButton({ link }: { link: string }) {
     <button
       onClick={handleCopy}
       title={link}
-      className="max-w-[220px] truncate text-xs text-brand hover:underline"
+      className="max-w-[220px] truncate text-xs text-primary-600 hover:underline"
     >
       {copiado ? "Link copiado!" : link}
     </button>

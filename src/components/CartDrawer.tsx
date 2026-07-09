@@ -1,58 +1,49 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { useCart } from "@/hooks/useCart";
 import { formatCurrencyBRL } from "@/lib/whatsapp";
 
-export function CartButton() {
-  const [aberto, setAberto] = useState(false);
-  const { totalItens } = useCart();
-
-  return (
-    <>
-      <button
-        onClick={() => setAberto(true)}
-        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-whatsapp px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-whatsapp-dark"
-      >
-        🛒 Carrinho
-        {totalItens > 0 && (
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-xs font-bold text-whatsapp-dark">
-            {totalItens}
-          </span>
-        )}
-      </button>
-      {aberto && <CartDrawer onClose={() => setAberto(false)} />}
-    </>
-  );
-}
-
-function CartDrawer({ onClose }: { onClose: () => void }) {
+export function CartDrawer({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const { itens, totalPreco, removerItem, alterarQuantidade, finalizarPedido } = useCart();
 
+  if (!open) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/40" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex justify-end bg-neutral-900/40"
+      onClick={onClose}
+    >
       <div
         className="flex h-full w-full max-w-sm flex-col bg-white shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between border-b p-4">
-          <h2 className="text-lg font-bold">Seu carrinho</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-700">
+        <div className="flex items-center justify-between border-b border-neutral-100 p-4">
+          <h2 className="text-lg font-bold text-neutral-800">Seu carrinho</h2>
+          <button
+            onClick={onClose}
+            className="rounded-full p-1 text-neutral-400 transition hover:bg-neutral-100 hover:text-neutral-700"
+          >
             ✕
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4">
           {itens.length === 0 ? (
-            <p className="mt-8 text-center text-sm text-gray-400">
+            <p className="mt-8 text-center text-sm text-neutral-400">
               Seu carrinho está vazio.
             </p>
           ) : (
             <ul className="flex flex-col gap-4">
               {itens.map((item) => (
                 <li key={item.produtoId} className="flex gap-3">
-                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md bg-gray-100">
+                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-neutral-50">
                     {item.imagemUrl && (
                       <Image
                         src={item.imagemUrl}
@@ -64,21 +55,25 @@ function CartDrawer({ onClose }: { onClose: () => void }) {
                     )}
                   </div>
                   <div className="flex flex-1 flex-col">
-                    <span className="text-sm font-medium leading-tight">{item.nome}</span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-sm font-medium leading-tight text-neutral-800">
+                      {item.nome}
+                    </span>
+                    <span className="text-xs text-neutral-500">
                       {formatCurrencyBRL(item.preco)}
                     </span>
-                    <div className="mt-1 flex items-center gap-2">
+                    <div className="mt-1.5 flex items-center gap-2">
                       <button
                         onClick={() => alterarQuantidade(item.produtoId, item.quantidade - 1)}
-                        className="h-6 w-6 rounded border text-sm leading-none hover:bg-gray-100"
+                        className="h-6 w-6 rounded-md border border-neutral-200 text-sm leading-none text-neutral-600 hover:bg-neutral-50"
                       >
                         −
                       </button>
-                      <span className="w-5 text-center text-sm">{item.quantidade}</span>
+                      <span className="w-5 text-center text-sm text-neutral-800">
+                        {item.quantidade}
+                      </span>
                       <button
                         onClick={() => alterarQuantidade(item.produtoId, item.quantidade + 1)}
-                        className="h-6 w-6 rounded border text-sm leading-none hover:bg-gray-100"
+                        className="h-6 w-6 rounded-md border border-neutral-200 text-sm leading-none text-neutral-600 hover:bg-neutral-50"
                       >
                         +
                       </button>
@@ -96,15 +91,15 @@ function CartDrawer({ onClose }: { onClose: () => void }) {
           )}
         </div>
 
-        <div className="border-t p-4">
-          <div className="mb-3 flex items-center justify-between text-sm font-semibold">
+        <div className="border-t border-neutral-100 p-4">
+          <div className="mb-3 flex items-center justify-between text-sm font-semibold text-neutral-800">
             <span>Total</span>
             <span>{formatCurrencyBRL(totalPreco)}</span>
           </div>
           <button
             disabled={itens.length === 0}
             onClick={finalizarPedido}
-            className="w-full rounded-md bg-whatsapp py-3 text-sm font-semibold text-white transition hover:bg-whatsapp-dark disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-lg bg-whatsapp py-3 text-sm font-semibold text-white transition hover:bg-whatsapp-dark disabled:cursor-not-allowed disabled:opacity-50"
           >
             Finalizar pedido no WhatsApp
           </button>

@@ -13,15 +13,15 @@ export default async function HomePage() {
 
   if (!vendedor || !vendedor.ativo) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
-        <h1 className="text-2xl font-bold text-brand">Performance Tríade</h1>
-        <p className="max-w-md text-gray-600">
+      <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white px-6 text-center">
+        <h1 className="text-2xl font-bold text-neutral-800">Performance Tríade</h1>
+        <p className="max-w-md text-neutral-500">
           Este catálogo é acessado através de um link exclusivo de vendedor.
           Solicite o seu link para começar a comprar.
         </p>
         <Link
           href="/admin/login"
-          className="mt-6 text-sm text-gray-400 underline underline-offset-4"
+          className="mt-6 text-sm text-neutral-400 underline underline-offset-4"
         >
           Acesso administrativo
         </Link>

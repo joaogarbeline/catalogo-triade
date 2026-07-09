@@ -14,18 +14,18 @@ export default async function ProdutosPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">Produtos</h1>
+        <h1 className="text-xl font-bold text-neutral-800">Produtos</h1>
         <Link
           href="/admin/produtos/novo"
-          className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-light"
+          className="rounded-lg bg-primary-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-primary-600"
         >
           + Novo produto
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-lg border bg-white">
+      <div className="overflow-hidden rounded-xl border border-neutral-100 bg-white">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-left text-xs uppercase text-gray-500">
+          <thead className="bg-neutral-50 text-left text-xs uppercase text-neutral-500">
             <tr>
               <th className="px-4 py-3">Nome</th>
               <th className="px-4 py-3">Categoria</th>
@@ -34,20 +34,25 @@ export default async function ProdutosPage() {
               <th className="px-4 py-3 text-right">Ações</th>
             </tr>
           </thead>
-          <tbody className="divide-y">
-            {produtos.map((produto) => (
-              <tr key={produto.id}>
-                <td className="px-4 py-3 font-medium">{produto.nome}</td>
-                <td className="px-4 py-3 text-gray-500">
+          <tbody>
+            {produtos.map((produto, i) => (
+              <tr
+                key={produto.id}
+                className={i % 2 === 1 ? "bg-neutral-50" : "bg-white"}
+              >
+                <td className="px-4 py-3 font-medium text-neutral-800">{produto.nome}</td>
+                <td className="px-4 py-3 text-neutral-500">
                   {produto.categoria?.nome ?? "—"}
                 </td>
-                <td className="px-4 py-3">{formatCurrencyBRL(Number(produto.preco))}</td>
+                <td className="px-4 py-3 text-neutral-700">
+                  {formatCurrencyBRL(Number(produto.preco))}
+                </td>
                 <td className="px-4 py-3">
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                       produto.ativo
-                        ? "bg-green-100 text-green-700"
-                        : "bg-gray-100 text-gray-500"
+                        ? "bg-primary-50 text-primary-700"
+                        : "bg-neutral-100 text-neutral-500"
                     }`}
                   >
                     {produto.ativo ? "Ativo" : "Inativo"}
@@ -57,7 +62,7 @@ export default async function ProdutosPage() {
                   <div className="flex justify-end gap-3">
                     <Link
                       href={`/admin/produtos/${produto.id}`}
-                      className="text-brand hover:underline"
+                      className="font-medium text-primary-600 hover:underline"
                     >
                       Editar
                     </Link>
@@ -68,7 +73,7 @@ export default async function ProdutosPage() {
             ))}
             {produtos.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-gray-400">
+                <td colSpan={5} className="px-4 py-8 text-center text-neutral-400">
                   Nenhum produto cadastrado.
                 </td>
               </tr>

@@ -109,28 +109,28 @@ export function ProductForm({
   return (
     <form onSubmit={handleSubmit} className="flex max-w-lg flex-col gap-4">
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Nome</label>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">Nome</label>
         <input
           required
           value={nome}
           onChange={(e) => setNome(e.target.value)}
-          className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-brand"
+          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-primary-500"
         />
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Descrição</label>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">Descrição</label>
         <textarea
           required
           rows={4}
           value={descricao}
           onChange={(e) => setDescricao(e.target.value)}
-          className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-brand"
+          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-primary-500"
         />
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Preço (R$)</label>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">Preço (R$)</label>
         <input
           required
           type="number"
@@ -138,16 +138,16 @@ export function ProductForm({
           min="0"
           value={preco}
           onChange={(e) => setPreco(e.target.value)}
-          className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-brand"
+          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-primary-500"
         />
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Categoria</label>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">Categoria</label>
         <select
           value={categoriaId}
           onChange={(e) => setCategoriaId(e.target.value)}
-          className="mb-2 w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-brand"
+          className="mb-2 w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-primary-500"
         >
           <option value="">Sem categoria</option>
           {categorias.map((cat) => (
@@ -161,12 +161,12 @@ export function ProductForm({
             placeholder="Nova categoria"
             value={novaCategoria}
             onChange={(e) => setNovaCategoria(e.target.value)}
-            className="flex-1 rounded-md border px-3 py-1.5 text-xs outline-none focus:border-brand"
+            className="flex-1 rounded-lg border border-neutral-200 px-3 py-1.5 text-xs outline-none focus:border-primary-500"
           />
           <button
             type="button"
             onClick={handleCriarCategoria}
-            className="rounded-md border px-3 py-1.5 text-xs font-medium hover:bg-gray-50"
+            className="rounded-lg border border-neutral-200 px-3 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-50"
           >
             Adicionar
           </button>
@@ -174,11 +174,11 @@ export function ProductForm({
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Foto</label>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">Foto</label>
         <input type="file" accept="image/*" onChange={handleUpload} className="text-sm" />
-        {enviandoImagem && <p className="mt-1 text-xs text-gray-400">Enviando imagem...</p>}
+        {enviandoImagem && <p className="mt-1 text-xs text-neutral-400">Enviando imagem...</p>}
         {imagemUrl && (
-          <div className="relative mt-2 h-32 w-32 overflow-hidden rounded-md border">
+          <div className="relative mt-2 h-32 w-32 overflow-hidden rounded-lg border border-neutral-200">
             <Image src={imagemUrl} alt="Preview" fill className="object-cover" />
           </div>
         )}
@@ -194,7 +194,7 @@ export function ProductForm({
       <button
         type="submit"
         disabled={enviando}
-        className="rounded-md bg-brand py-2 text-sm font-semibold text-white hover:bg-brand-light disabled:opacity-50"
+        className="rounded-lg bg-primary-500 py-2 text-sm font-semibold text-white transition hover:bg-primary-600 disabled:opacity-50"
       >
         {enviando ? "Salvando..." : "Salvar produto"}
       </button>

@@ -48,17 +48,17 @@ export function VendorForm({ vendedor }: { vendedor?: VendedorInicial }) {
   return (
     <form onSubmit={handleSubmit} className="flex max-w-lg flex-col gap-4">
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Nome</label>
+        <label className="mb-1 block text-sm font-medium text-neutral-700">Nome</label>
         <input
           required
           value={nome}
           onChange={(e) => setNome(e.target.value)}
-          className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-brand"
+          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-primary-500"
         />
       </div>
 
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">
+        <label className="mb-1 block text-sm font-medium text-neutral-700">
           WhatsApp (com DDI e DDD, ex: 5511999999999)
         </label>
         <input
@@ -66,7 +66,7 @@ export function VendorForm({ vendedor }: { vendedor?: VendedorInicial }) {
           value={whatsapp}
           onChange={(e) => setWhatsapp(e.target.value)}
           placeholder="5511999999999"
-          className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-brand"
+          className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm outline-none focus:border-primary-500"
         />
       </div>
 
@@ -80,7 +80,7 @@ export function VendorForm({ vendedor }: { vendedor?: VendedorInicial }) {
       <button
         type="submit"
         disabled={enviando}
-        className="rounded-md bg-brand py-2 text-sm font-semibold text-white hover:bg-brand-light disabled:opacity-50"
+        className="rounded-lg bg-primary-500 py-2 text-sm font-semibold text-white transition hover:bg-primary-600 disabled:opacity-50"
       >
         {enviando ? "Salvando..." : "Salvar vendedor"}
       </button>
