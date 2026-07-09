@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 
 type Categoria = { id: string; nome: string };
@@ -36,6 +36,7 @@ export function ProductForm({
   const [enviando, setEnviando] = useState(false);
   const [enviandoImagem, setEnviandoImagem] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
+  const fotoInputRef = useRef<HTMLInputElement>(null);
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -185,13 +186,50 @@ export function ProductForm({
 
       <div>
         <label className="mb-1 block text-sm font-medium text-neutral-700">Foto</label>
-        <input type="file" accept="image/*" onChange={handleUpload} className="text-sm" />
-        {enviandoImagem && <p className="mt-1 text-xs text-neutral-400">Enviando imagem...</p>}
-        {imagemUrl && (
-          <div className="relative mt-2 h-32 w-32 overflow-hidden rounded-lg border border-neutral-200">
-            <Image src={imagemUrl} alt="Preview" fill className="object-cover" />
+        <input
+          id="foto-produto"
+          ref={fotoInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleUpload}
+          className="hidden"
+        />
+
+        {imagemUrl ? (
+          <div className="flex items-center gap-3">
+            <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-neutral-200">
+              <Image src={imagemUrl} alt="Preview" fill className="object-cover" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="foto-produto"
+                className="flex h-11 cursor-pointer items-center justify-center rounded-lg border border-neutral-200 px-4 text-xs font-medium text-neutral-700 transition hover:bg-neutral-50 active:scale-[0.98]"
+              >
+                Trocar foto
+              </label>
+              <button
+                type="button"
+                onClick={() => {
+                  setImagemUrl(null);
+                  if (fotoInputRef.current) fotoInputRef.current.value = "";
+                }}
+                className="flex h-11 items-center justify-center rounded-lg border border-red-100 px-4 text-xs font-medium text-red-500 transition hover:bg-red-50 active:scale-[0.98]"
+              >
+                Remover foto
+              </button>
+            </div>
           </div>
+        ) : (
+          <label
+            htmlFor="foto-produto"
+            className="flex h-24 cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-neutral-200 text-neutral-500 transition hover:border-primary-300 hover:bg-primary-50/40 active:scale-[0.99]"
+          >
+            <CameraIcon />
+            <span className="text-xs font-medium">Tirar foto ou escolher da galeria</span>
+          </label>
         )}
+
+        {enviandoImagem && <p className="mt-2 text-xs text-neutral-400">Enviando imagem...</p>}
       </div>
 
       <label className="flex items-center gap-2 text-sm">
@@ -209,5 +247,23 @@ export function ProductForm({
         {enviando ? "Salvando..." : "Salvar produto"}
       </button>
     </form>
+  );
+}
+
+function CameraIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-6 w-6"
+    >
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+      <circle cx="12" cy="13" r="4" />
+    </svg>
   );
 }

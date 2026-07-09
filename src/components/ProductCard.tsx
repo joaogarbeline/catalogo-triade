@@ -53,7 +53,7 @@ export function ProductCard({ produto }: { produto: ProdutoCard }) {
           {produto.descricao}
         </p>
 
-        <div className="mt-2 flex items-center justify-between gap-2">
+        <div className="mt-2 flex flex-col gap-2">
           <span className="text-base font-bold text-primary-600">
             {formatCurrencyBRL(produto.preco)}
           </span>
