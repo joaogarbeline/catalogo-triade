@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { VENDEDOR_COOKIE_NAME, VENDEDOR_COOKIE_MAX_AGE } from "@/lib/constants";
+import { VENDEDOR_COOKIE_NAME, VENDEDOR_COOKIE_MAX_AGE, getBaseUrl } from "@/lib/constants";
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
   const vendedor = await prisma.vendedor.findUnique({
     where: { hash: params.slug },
   });
 
-  const redirectUrl = new URL("/", request.url);
+  const redirectUrl = new URL("/", getBaseUrl());
 
   if (!vendedor || !vendedor.ativo) {
     redirectUrl.searchParams.set("vendedor_invalido", "1");
