@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Categoria {
+  id        String    @id @default(cuid())
+  nome      String    @unique
+  slug      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  produtos  Produto[]
+
+  @@map("categorias")
+}
+
+model Produto {
+  id          String    @id @default(cuid())
+  nome        String
+  descricao   String
+  preco       Decimal   @db.Decimal(10, 2)
+  imagemUrl   String?
+  ativo       Boolean   @default(true)
+  categoriaId String?
+  categoria   Categoria? @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("produtos")
+  @@index([categoriaId])
+}
+
+model Vendedor {
+  id         String   @id @default(cuid())
+  nome       String
+  whatsapp   String   // formato E.164 sem "+" ex: 5511999999999
+  hash       String   @unique // slug/hash usado em /c/[hash]
+  ativo      Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("vendedores")
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  @@map("admins")
+}
