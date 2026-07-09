@@ -6,7 +6,7 @@ mkdir -p ./public/uploads
 chown -R nextjs:nodejs ./public/uploads
 
 echo "==> Aplicando migrations do Prisma..."
-su-exec nextjs npx prisma migrate deploy
+su-exec nextjs node ./node_modules/prisma/build/index.js migrate deploy
 
 echo "==> Iniciando aplicação Next.js..."
 exec su-exec nextjs "$@"
