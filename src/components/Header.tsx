@@ -15,7 +15,10 @@ export function Header({ onOpenCart }: { onOpenCart: () => void }) {
         >
           <CartIcon />
           {totalItens > 0 && (
-            <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-500 px-1 text-[11px] font-bold text-white">
+            <span
+              key={totalItens}
+              className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 animate-pop items-center justify-center rounded-full bg-primary-500 px-1 text-[11px] font-bold text-white"
+            >
               {totalItens}
             </span>
           )}

@@ -41,6 +41,25 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
+      keyframes: {
+        pop: {
+          "0%": { transform: "scale(1)" },
+          "35%": { transform: "scale(1.35)" },
+          "65%": { transform: "scale(0.92)" },
+          "100%": { transform: "scale(1)" },
+        },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+      },
+      animation: {
+        pop: "pop 380ms cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "fade-in": "fade-in 200ms ease-out",
+      },
+      transitionDuration: {
+        250: "250ms",
+      },
     },
   },
   plugins: [],

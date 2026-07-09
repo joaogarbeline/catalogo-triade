@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
+import { AddToCartButton } from "@/components/AddToCartButton";
 import { useCart } from "@/hooks/useCart";
 import { formatCurrencyBRL } from "@/lib/whatsapp";
 
@@ -15,17 +17,21 @@ export type ProdutoCard = {
 
 export function ProductCard({ produto }: { produto: ProdutoCard }) {
   const { adicionarItem } = useCart();
+  const [imagemCarregada, setImagemCarregada] = useState(false);
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-xl border border-neutral-100 bg-white transition hover:shadow-md">
+    <div className="group flex flex-col overflow-hidden rounded-xl border border-neutral-100 bg-white transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg active:scale-[0.98]">
       <div className="relative aspect-square w-full overflow-hidden bg-neutral-50">
         {produto.imagemUrl ? (
           <Image
             src={produto.imagemUrl}
             alt={produto.nome}
             fill
-            className="object-cover transition duration-300 group-hover:scale-105"
+            className={`object-cover transition-all duration-500 ease-out group-hover:scale-105 ${
+              imagemCarregada ? "scale-100 opacity-100 blur-0" : "scale-105 opacity-0 blur-md"
+            }`}
             sizes="(max-width: 768px) 50vw, 25vw"
+            onLoad={() => setImagemCarregada(true)}
           />
         ) : (
           <div className="flex h-full items-center justify-center text-xs text-neutral-400">
@@ -51,8 +57,8 @@ export function ProductCard({ produto }: { produto: ProdutoCard }) {
           <span className="text-base font-bold text-primary-600">
             {formatCurrencyBRL(produto.preco)}
           </span>
-          <button
-            onClick={() =>
+          <AddToCartButton
+            onAdd={() =>
               adicionarItem({
                 produtoId: produto.id,
                 nome: produto.nome,
@@ -60,10 +66,7 @@ export function ProductCard({ produto }: { produto: ProdutoCard }) {
                 imagemUrl: produto.imagemUrl,
               })
             }
-            className="shrink-0 rounded-lg bg-primary-500 px-3 py-2 text-xs font-semibold text-white transition hover:bg-primary-600 active:scale-95"
-          >
-            + Adicionar
-          </button>
+          />
         </div>
       </div>
     </div>
