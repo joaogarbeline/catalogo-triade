@@ -8,6 +8,7 @@ services:
       - "3000"
     environment:
       NODE_ENV: production
+      HOSTNAME: "0.0.0.0"
       DATABASE_URL: postgresql://${POSTGRES_USER:-triade}:${POSTGRES_PASSWORD:-triade}@db:5432/${POSTGRES_DB:-catalogo_triade}?schema=public
       JWT_SECRET: ${JWT_SECRET}
       NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-https://catalogo.performancetriade.com.br}
