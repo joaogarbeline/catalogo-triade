@@ -1,10 +1,22 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { VENDEDOR_COOKIE_NAME } from "@/lib/constants";
 import { CatalogClient } from "@/components/CatalogClient";
 
-export default async function HomePage() {
+type SearchParams = { [key: string]: string | string[] | undefined };
+
+function readParam(searchParams: SearchParams, key: string) {
+  const value = searchParams[key];
+  return typeof value === "string" && value.trim() !== "" ? value.trim() : undefined;
+}
+
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   const vendedorHash = cookies().get(VENDEDOR_COOKIE_NAME)?.value;
 
   const vendedor = vendedorHash
@@ -29,11 +41,50 @@ export default async function HomePage() {
     );
   }
 
+  const categoriaFiltro = readParam(searchParams, "category");
+  const qFiltro = readParam(searchParams, "q");
+  const sortFiltro = readParam(searchParams, "sort");
+  const minPriceRaw = readParam(searchParams, "min_price");
+  const maxPriceRaw = readParam(searchParams, "max_price");
+
+  const minPrice = minPriceRaw !== undefined ? Number(minPriceRaw) : undefined;
+  const maxPrice = maxPriceRaw !== undefined ? Number(maxPriceRaw) : undefined;
+
+  const precoFiltro: Prisma.ProdutoWhereInput["preco"] =
+    (minPrice !== undefined && !Number.isNaN(minPrice)) ||
+    (maxPrice !== undefined && !Number.isNaN(maxPrice))
+      ? {
+          ...(minPrice !== undefined && !Number.isNaN(minPrice) ? { gte: minPrice } : {}),
+          ...(maxPrice !== undefined && !Number.isNaN(maxPrice) ? { lte: maxPrice } : {}),
+        }
+      : undefined;
+
+  const orderBy: Prisma.ProdutoOrderByWithRelationInput =
+    sortFiltro === "menor-preco"
+      ? { preco: "asc" }
+      : sortFiltro === "maior-preco"
+        ? { preco: "desc" }
+        : { createdAt: "desc" };
+
+  const where: Prisma.ProdutoWhereInput = {
+    ativo: true,
+    ...(categoriaFiltro ? { categoria: { nome: categoriaFiltro } } : {}),
+    ...(precoFiltro ? { preco: precoFiltro } : {}),
+    ...(qFiltro
+      ? {
+          OR: [
+            { nome: { contains: qFiltro, mode: "insensitive" } },
+            { descricao: { contains: qFiltro, mode: "insensitive" } },
+          ],
+        }
+      : {}),
+  };
+
   const [produtos, categoriasRaw] = await Promise.all([
     prisma.produto.findMany({
-      where: { ativo: true },
+      where,
       include: { categoria: { select: { nome: true } } },
-      orderBy: { createdAt: "desc" },
+      orderBy,
     }),
     prisma.categoria.findMany({ orderBy: { nome: "asc" } }),
   ]);
