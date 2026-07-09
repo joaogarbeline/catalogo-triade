@@ -5,8 +5,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-neutral-50">
       <header className="bg-neutral-900">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-          <nav className="flex items-center gap-5 text-sm font-medium">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-3">
+          <nav className="flex items-center gap-3 text-sm font-medium sm:gap-5">
             <Link href="/admin" className="text-white transition hover:text-primary-300">
               Dashboard
             </Link>

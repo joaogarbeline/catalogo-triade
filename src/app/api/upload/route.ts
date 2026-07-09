@@ -6,11 +6,21 @@ import { randomUUID } from "crypto";
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 
+function isUploadedFile(
+  value: FormDataEntryValue | null
+): value is FormDataEntryValue & { type: string; size: number; arrayBuffer: () => Promise<ArrayBuffer> } {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof (value as { arrayBuffer?: unknown }).arrayBuffer === "function"
+  );
+}
+
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const file = formData.get("file");
 
-  if (!(file instanceof File)) {
+  if (!isUploadedFile(file)) {
     return NextResponse.json({ error: "Arquivo não enviado" }, { status: 400 });
   }
 
